@@ -7,7 +7,10 @@ class App extends Component {
     this.state = {
       isDrawing: false,
       lastX: 0,
-      lastY: 0, 
+      lastY: 0,
+      canvas: '',
+      ctx: '',
+      hue: `hsl(85%, 100%, 50%)`
     }
   }
   componentDidMount() {
@@ -19,29 +22,50 @@ class App extends Component {
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
+
+    this.setState({
+      canvas,
+      ctx
+    })
   }
-  mouseMove() {
-    console.log('mouse moving');
+  mouseMove(e) {
+    this.draw(e);
+    console.log('mouse move');
   }
   mouseOut() {
     console.log('mouse out');
-    // this.setState({
-    //   isDrawing: false
-    // })
+    this.setState({
+      isDrawing: false
+    })
   }
   mouseUp() {
+    this.setState({
+      isDrawing: false
+    })
     console.log('mouse up');
-    // this.setState({
-    //   isDrawing: false
-    // })
   }
   mouseDown(e) {
+
+    this.setState({
+      isDrawing: true,
+      lastX: e.nativeEvent.offsetX,
+      lastY: e.nativeEvent.offsetY,
+    });
     console.log('mouse down');
-    // this.setState({
-    //   isDrawing: true,
-    //   lastX: e.offsetX,
-    //   lastY: e.offsetY
-    // })
+  }
+  draw(e) {
+    if (!this.state.isDrawing) {
+      return;
+    }
+    this.state.ctx.beginPath();
+    this.state.ctx.moveTo(this.state.lastX, this.state.lastY);
+    this.state.ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    this.state.ctx.strokeStyle = '#000';
+    this.state.ctx.stroke();
+    this.setState({
+      lastX: e.nativeEvent.offsetX,
+      lastY: e.nativeEvent.offsetY
+    })
   }
 
   render() {
@@ -55,7 +79,6 @@ class App extends Component {
           onMouseUp={this.mouseUp.bind(this)}
           ref="myCanvas"
           id="draw"
-          width={800} height={800}
         >
         </canvas>
       </div>
