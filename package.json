@@ -4,6 +4,8 @@
   "description": "Messing around with canvas and video",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack -w && nodemon server",
+    "start": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +20,15 @@
   },
   "homepage": "https://github.com/davidd232/videoFun#readme",
   "dependencies": {
-    "path": "^0.12.7"
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "nodemon": "^1.17.1",
+    "path": "^0.12.7",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   }
 }
