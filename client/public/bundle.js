@@ -20971,7 +20971,7 @@ var App = function (_Component) {
       lastY: 0,
       canvas: '',
       ctx: '',
-      hue: '#095'
+      hue: '#000'
     };
     return _this;
   }
@@ -21000,7 +21000,7 @@ var App = function (_Component) {
         autoRequestMedia: true
       });
       webrtc.on('readyToCall', function () {
-        webrtc.joinRoom('your awesome room name');
+        webrtc.joinRoom('lickEm');
       });
     }
   }, {
@@ -21082,6 +21082,11 @@ var App = function (_Component) {
             'button',
             { className: 'clearBtn', onClick: this.handleClick.bind(this) },
             'Clear Drawing'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'screenShot' },
+            'Take Picture'
           ),
           _react2.default.createElement(_reactColor.SketchPicker, {
             color: this.state.hue,

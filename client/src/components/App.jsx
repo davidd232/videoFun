@@ -11,7 +11,7 @@ class App extends Component {
       lastY: 0,
       canvas: '',
       ctx: '',
-      hue: '#095'
+      hue: '#000'
     }
   }
   componentDidMount() {
@@ -36,7 +36,7 @@ class App extends Component {
       autoRequestMedia: true
     });
     webrtc.on('readyToCall', function () {
-      webrtc.joinRoom('your awesome room name');
+      webrtc.joinRoom('lickEm');
     });
   }
   mouseMove(e) {
@@ -96,6 +96,7 @@ class App extends Component {
       <div className='row'>
         <div className='column1'>
           <button className='clearBtn' onClick={this.handleClick.bind(this)}>Clear Drawing</button>
+          <button className='screenShot' >Take Picture</button>
           <SketchPicker
             color={this.state.hue}
             onChangeComplete={this.handleChangeComplete.bind(this)}
