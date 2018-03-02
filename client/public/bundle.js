@@ -18317,8 +18317,11 @@ var App = function (_Component) {
     value: function componentDidMount() {
       var canvas = this.refs.myCanvas;
       var ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      // ...then set the internal size to match
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
       // ctx.strokeStyle = '#0af';
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
@@ -18408,12 +18411,15 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var style = {
+        color: this.state.hue
+      };
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'row' },
         _react2.default.createElement(
           'div',
-          null,
+          { className: 'column1' },
           _react2.default.createElement(
             'button',
             { className: 'clearBtn', onClick: this.handleClick.bind(this) },
@@ -18422,11 +18428,16 @@ var App = function (_Component) {
           _react2.default.createElement(_reactColor.SketchPicker, {
             color: this.state.hue,
             onChangeComplete: this.handleChangeComplete.bind(this)
-          })
+          }),
+          _react2.default.createElement(
+            'h1',
+            { style: style },
+            'Draw on your face, bozo!'
+          )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'container' },
+          { className: 'column2' },
           _react2.default.createElement('video', { className: 'video', id: 'localVideo' }),
           _react2.default.createElement('canvas', {
             className: 'canvas',

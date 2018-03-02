@@ -17,8 +17,11 @@ class App extends Component {
   componentDidMount() {
     const canvas = this.refs.myCanvas;
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    // ...then set the internal size to match
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
     // ctx.strokeStyle = '#0af';
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
@@ -92,16 +95,20 @@ class App extends Component {
     });
   };
   render() {
+    let style = {
+      color: this.state.hue
+    }
     return (
-      <div >
-        <div>
+      <div className='row'>
+        <div className='column1'>
           <button className='clearBtn' onClick={this.handleClick.bind(this)}>Clear Drawing</button>
-          <SketchPicker 
+          <SketchPicker
             color={this.state.hue}
             onChangeComplete={this.handleChangeComplete.bind(this)}
           />
+          <h1 style={style}>Draw on your face, bozo!</h1>
         </div>
-        <div className='container'>
+        <div className='column2'>
           <video className='video' id='localVideo'></video>
           <canvas
             className='canvas'
