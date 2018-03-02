@@ -19,10 +19,8 @@ class App extends Component {
     const ctx = canvas.getContext('2d');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    // ...then set the internal size to match
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    // ctx.strokeStyle = '#0af';
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
@@ -38,13 +36,11 @@ class App extends Component {
       autoRequestMedia: true
     });
     webrtc.on('readyToCall', function () {
-      // you can name it anything
       webrtc.joinRoom('your awesome room name');
     });
   }
   mouseMove(e) {
     this.draw(e);
-    console.log('mouse move');
   }
   mouseOut() {
     console.log('mouse out');
@@ -56,7 +52,6 @@ class App extends Component {
     this.setState({
       isDrawing: false
     })
-    console.log('mouse up');
   }
   mouseDown(e) {
 
@@ -65,7 +60,6 @@ class App extends Component {
       lastX: e.nativeEvent.offsetX,
       lastY: e.nativeEvent.offsetY,
     });
-    console.log('mouse down');
   }
   draw(e) {
     if (!this.state.isDrawing) {
