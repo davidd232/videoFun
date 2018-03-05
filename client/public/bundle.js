@@ -20971,7 +20971,10 @@ var App = function (_Component) {
       lastY: 0,
       canvas: '',
       ctx: '',
-      hue: '#000'
+      hue: '#000',
+      webrtc: null,
+      bc: null,
+      disco: false
     };
     return _this;
   }
@@ -20987,7 +20990,7 @@ var App = function (_Component) {
       canvas.height = canvas.offsetHeight;
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
-      ctx.lineWidth = 5;
+      ctx.lineWidth = 20;
 
       this.setState({
         canvas: canvas,
@@ -21001,6 +21004,9 @@ var App = function (_Component) {
       });
       webrtc.on('readyToCall', function () {
         webrtc.joinRoom('lickEm');
+      });
+      this.setState({
+        webrtc: webrtc
       });
     }
   }, {
@@ -21060,6 +21066,16 @@ var App = function (_Component) {
       this.state.ctx.restore();
     }
   }, {
+    key: 'pause',
+    value: function pause() {
+      this.state.webrtc.pauseVideo();
+    }
+  }, {
+    key: 'play',
+    value: function play() {
+      this.state.webrtc.resumeVideo();
+    }
+  }, {
     key: 'handleChangeComplete',
     value: function handleChangeComplete(color) {
       this.setState({
@@ -21068,9 +21084,60 @@ var App = function (_Component) {
     }
   }, {
     key: 'render',
+
+    // discoPlay() {
+    //   console.log('heyo');
+    //   let r = 80;
+    //   let g = 125;
+    //   let b = 255;
+    //   if (this.state.disco === false) {
+    //     this.setState({
+    //       disco: true
+    //     })
+    //   } else {
+    //     this.setState({
+    //       disco: false
+    //     })
+    //   }
+    //   let inter;
+    //   if (this.state.disco === true) {
+    //     inter = () => {
+    //       setInterval(() => {
+    //         if (r < 0 || r > 255) {
+    //           r = 0;
+    //         }
+    //         if (g < 0 || g > 255) {
+    //           g = 0;
+    //         }
+    //         if (b < 0 || b > 255) {
+    //           b = 0;
+    //         }
+    //         r += 10;
+    //         g -= 30;
+    //         b += 50;
+    //         this.setState({
+    //           bg: `rgba(${r},${g},${b},0.5)`
+    //         })
+    //       }, 100);
+    //     }
+    //     inter();
+    //   } else {
+    //     let stop = (() => {
+    //       console.log('ugh');
+    //       clearInterval(inter);
+    //     })()
+    //     this.setState({
+    //       bg: ''
+    //     })
+    //   }
+    //   console.log(this.state.disco);
+    // }
     value: function render() {
       var style = {
         color: this.state.hue
+      };
+      var bg = {
+        backgroundColor: this.state.bg
       };
       return _react2.default.createElement(
         'div',
@@ -21085,8 +21152,13 @@ var App = function (_Component) {
           ),
           _react2.default.createElement(
             'button',
-            { className: 'screenShot' },
-            'Take Picture'
+            { className: 'screenShot', onClick: this.pause.bind(this) },
+            'Stop Video'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'screenShot', onClick: this.play.bind(this) },
+            'Resume Video'
           ),
           _react2.default.createElement(_reactColor.SketchPicker, {
             color: this.state.hue,
@@ -21103,6 +21175,7 @@ var App = function (_Component) {
           { className: 'column2' },
           _react2.default.createElement('video', { className: 'video', id: 'localVideo' }),
           _react2.default.createElement('canvas', {
+            style: bg,
             className: 'canvas',
             onMouseMove: this.mouseMove.bind(this),
             onMouseOut: this.mouseOut.bind(this),

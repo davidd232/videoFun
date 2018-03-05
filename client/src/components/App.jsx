@@ -11,7 +11,10 @@ class App extends Component {
       lastY: 0,
       canvas: '',
       ctx: '',
-      hue: '#000'
+      hue: '#000',
+      webrtc: null,
+      bc: null,
+      disco: false
     }
   }
   componentDidMount() {
@@ -23,7 +26,7 @@ class App extends Component {
     canvas.height = canvas.offsetHeight;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 20;
 
     this.setState({
       canvas,
@@ -38,6 +41,9 @@ class App extends Component {
     webrtc.on('readyToCall', function () {
       webrtc.joinRoom('lickEm');
     });
+    this.setState({
+      webrtc
+    })
   }
   mouseMove(e) {
     this.draw(e);
@@ -83,20 +89,78 @@ class App extends Component {
     this.state.ctx.clearRect(0, 0, this.state.canvas.width, this.state.canvas.height);
     this.state.ctx.restore()
   }
+  pause() {
+    this.state.webrtc.pauseVideo();
+  }
+  play() {
+    this.state.webrtc.resumeVideo();
+  }
   handleChangeComplete(color) {
     this.setState({
       hue: color.hex
     });
   };
+  // discoPlay() {
+  //   console.log('heyo');
+  //   let r = 80;
+  //   let g = 125;
+  //   let b = 255;
+  //   if (this.state.disco === false) {
+  //     this.setState({
+  //       disco: true
+  //     })
+  //   } else {
+  //     this.setState({
+  //       disco: false
+  //     })
+  //   }
+  //   let inter;
+  //   if (this.state.disco === true) {
+  //     inter = () => {
+  //       setInterval(() => {
+  //         if (r < 0 || r > 255) {
+  //           r = 0;
+  //         }
+  //         if (g < 0 || g > 255) {
+  //           g = 0;
+  //         }
+  //         if (b < 0 || b > 255) {
+  //           b = 0;
+  //         }
+  //         r += 10;
+  //         g -= 30;
+  //         b += 50;
+  //         this.setState({
+  //           bg: `rgba(${r},${g},${b},0.5)`
+  //         })
+  //       }, 100);
+  //     }
+  //     inter();
+  //   } else {
+  //     let stop = (() => {
+  //       console.log('ugh');
+  //       clearInterval(inter);
+  //     })()
+  //     this.setState({
+  //       bg: ''
+  //     })
+  //   }
+  //   console.log(this.state.disco);
+  // }
   render() {
     let style = {
       color: this.state.hue
+    }
+    let bg = {
+      backgroundColor: this.state.bg
     }
     return (
       <div className='row'>
         <div className='column1'>
           <button className='clearBtn' onClick={this.handleClick.bind(this)}>Clear Drawing</button>
-          <button className='screenShot' >Take Picture</button>
+          <button className='screenShot' onClick={this.pause.bind(this)}>Stop Video</button>
+          <button className='screenShot' onClick={this.play.bind(this)}>Resume Video</button>
+          {/* <button className='disco' onClick={this.discoPlay.bind(this)}>Disco Time!</button> */}
           <SketchPicker
             color={this.state.hue}
             onChangeComplete={this.handleChangeComplete.bind(this)}
@@ -106,6 +170,7 @@ class App extends Component {
         <div className='column2'>
           <video className='video' id='localVideo'></video>
           <canvas
+            style={bg}
             className='canvas'
             onMouseMove={this.mouseMove.bind(this)}
             onMouseOut={this.mouseOut.bind(this)}

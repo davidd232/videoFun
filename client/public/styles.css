@@ -14,8 +14,9 @@ body {
 
 .canvas {
   width: 70%;
+  height: auto;
   position: absolute;
-  z-index: 10; 
+  z-index: 1; 
 }
 .column1 {
   flex: 25%;
